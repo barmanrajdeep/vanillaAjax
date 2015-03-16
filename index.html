@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<style>
+			img{border: 1px solid #bbbbbb; width: 600px; height: 350px; margin-left: 30px; margin-right: 5px;}
+			.ars{position: absolute; top: 190px; cursor: pointer; font-size: 50px; color: #bbbbbb;}
+		</style>
+	</head>
+	<body>
+		<h3>Slider 1.0</h3>
+		<div id="ss">
+			<span class="ars" id="left">&laquo;</span><img src="" ><span class="ars" id="right">&raquo;</span>
+		</div>
+
+		<script type="text/javascript">
+			
+			var x = new XMLHttpRequest();
+			
+			x.open('get', 'https://s3.amazonaws.com/media.mobstac.com/test/slideshow.json', true);
+			
+			x.send();
+			
+			x.onload = handler;
+
+			var y = [];
+
+			function handler(data){
+				console.log(data);
+				var dataObj = JSON.parse(data.currentTarget.response);
+
+				$.each(dataObj.content, function(){
+					$.each(this.media.images, function(){
+						y.push(this.origSrc);
+					});
+				});
+
+				$('img').attr('src', y[0]);
+
+			}
+
+			$('#right').on('click', function(){
+				var val = $('img').attr('src');
+				var ind = y.indexOf(val);
+				var newInd = (ind+1) % y.length;
+				$('img').attr('src', y[newInd]);
+			});
+
+			$('#left').on('click', function(){
+				var val = $('img').attr('src');
+				var ind = y.indexOf(val);
+				if ( ind === 0) {
+					ind = y.length;
+				}
+				var newInd = (ind-1) % y.length;
+				$('img').attr('src', y[newInd]);
+			});
+
+		</script>
+	</body>
+</html>
