@@ -25,16 +25,18 @@
 
 			var y = [];
 
-			function handler(data){
-				console.log(data);
-				var dataObj = JSON.parse(data.currentTarget.response);
+			function handler(){
 
-				$.each(dataObj.content, function(){
-					$.each(this.media.images, function(){
-						y.push(this.origSrc);
-					});
+				var data = JSON.parse(x.response);
+
+				var array1 = data.content;
+
+				$.each(array1, function(){
+					var array2 = this.media.images;
+					
+					$.each(array2, function(){y.push(this.origSrc)});
+
 				});
-
 				$('img').attr('src', y[0]);
 
 			}
